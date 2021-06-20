@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../widgets/image_input.dart';
+import '../providers/great_places.dart';
 
 class AddPlace extends StatefulWidget {
   static const routeName = '/add-place';
@@ -9,6 +15,34 @@ class AddPlace extends StatefulWidget {
 }
 
 class _AddPlaceState extends State<AddPlace> {
+  final _titleController = TextEditingController();
+  File? _pickedImage;
+
+  void _selectImage(pickedImage) {
+    _pickedImage = pickedImage;
+  }
+
+  void _savePlace() {
+    if (_titleController.text.isEmpty || _pickedImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Enter valid Place Name and Picture"),
+        ),
+      );
+      return;
+    }
+
+    try {
+      Provider.of<GreatPlaces>(context, listen: false).addPlace(
+        _titleController.text,
+        _pickedImage!,
+      );
+      Navigator.of(context).pop();
+    } catch (error) {
+      print("There is some error while saving the image");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,13 +57,24 @@ class _AddPlaceState extends State<AddPlace> {
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Column(
-                  children: [],
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Title'),
+                      controller: _titleController,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    ImageInput(_selectImage),
+                  ],
                 ),
               ),
             ),
           ),
           ElevatedButton.icon(
-            onPressed: () {},
+            onPressed: () {
+              _savePlace();
+            },
             icon: Icon(Icons.add),
             label: Text("Add Place"),
             style: ElevatedButton.styleFrom(

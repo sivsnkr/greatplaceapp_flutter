@@ -10,6 +10,12 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access Photos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Access Camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Access Micorphone</string>
 	<key>CFBundleName</key>
 	<string>greatplaceapp</string>
 	<key>CFBundlePackageType</key>
